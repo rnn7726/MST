@@ -21,6 +21,10 @@ public class MST {
      * @param args arguments should be the file and only the file
      */
     public static void main(String[] args){
+		if (args.length == 0){
+			System.out.println("Input file not found");
+			System.exit(0);
+		}
 		File file = new File(args[0]);
 		if (file.isFile()){
 			openFile(args[0]);
@@ -43,6 +47,8 @@ public class MST {
 		g.printMatrix();
 		g.printList();
 		g.printDFS();
+		Sort s = new Sort(g);
+		s.printSort();
 	}
 	/**
 	 * @param filename the name of the file being opened
