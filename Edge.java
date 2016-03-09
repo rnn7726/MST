@@ -11,4 +11,16 @@ public class Edge{
 		weight = w;
 	}
 
+	public int getL(){
+		return left_vertex;
+	}
+
+	public int getR(){
+		return right_vertex;
+	}
+
+	public int getW(){
+		return weight;
+	}
+
 }
