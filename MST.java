@@ -48,7 +48,6 @@ public class MST {
 		g.printList();
 		g.printDFS();
 		Sort s = new Sort(g);
-		s.printSort();
 	}
 	/**
 	 * @param filename the name of the file being opened

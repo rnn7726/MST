@@ -7,11 +7,11 @@ import java.util.Random;
  * validity in terms of having all parts of the tree connected with one another.
  */
 public class Graph {
-	static int[][] adjList;
+	int[][] adjList;
 	int n;
 	int seed;
 	float p;
-	Integer[] vertices;
+	Integer[] verticesDiscovered;
 	Integer[] predecessors;
 	Random isConnected = new Random();
 	Random isWeight = new Random();
@@ -28,7 +28,7 @@ public class Graph {
 		this.seed = seed; 
 		this.p = p;
 		adjList = new int[n][n];
-		vertices = new Integer[n];
+		verticesDiscovered = new Integer[n];
 		predecessors = new Integer[n];
 		//isConnected = new Random(seed);
 		//isWeight = new Random(2*seed);
@@ -114,13 +114,13 @@ public class Graph {
 		//4          if vertex w is not labeled as discovered then
 		//5              recursively call DFS(G,w)
 		//label v as discovered
-		vertices[v] = 1;
+		verticesDiscovered[v] = 1;
 		predecessors[v] = parent;
 		//for all edges from v to w in adjacent edges(v)
 		for (int x = v; x < n;){
 			for (int y = 0; y < n; y++){
 				if(adjList[x][y] != 0){
-					if (vertices[y] == null){
+					if (verticesDiscovered[y] == null){
 						dfs(y, v);
 						count++;
 					} 
@@ -142,5 +142,12 @@ public class Graph {
 			}
 		}
 	}
+
+	public int[][] getList(){
+		return adjList;
+	}
 	
+	public int getN(){
+		return n;
+	}
 }
