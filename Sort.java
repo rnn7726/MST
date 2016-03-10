@@ -19,28 +19,30 @@ public class Sort{
 				}
 			}
 		}
-		printInsertionSort();
+		//printInsertionSort();
 		printCountSort();
 		printQuickSort();
 	}
 	
 	public static List<Edge> insertionSort(List<Edge> e){
         Edge temp;
-        for(int i = 1; i < e.size(); i++) {
+        List<Edge> result = e;
+        for(int i = 1; i < result.size(); i++) {
             for(int j = i ; j > 0 ; j--){
-                if(e.get(j).getW() < e.get(j-1).getW()){
-                    temp = e.get(j);
-                    e.set(j , e.get(j-1));
-                    e.set(j-1 , temp);
+                if(result.get(j).getW() < result.get(j-1).getW()){
+                    temp = result.get(j);
+                    result.set(j , result.get(j-1));
+                    result.set(j-1 , temp);
                 }
             }
         }
-        return e;
+        return result;
 	}
 
 	public static List<Edge> countSort(List<Edge> e){
 		int high = 0;
 		int low = 0;
+		//get high and low values
 		for(int i = 0 ; i < e.size() ; i++){
 			if(high == 0){
 				high = e.get(i).getW();
@@ -55,8 +57,29 @@ public class Sort{
 				low = e.get(i).getW();
 			}
 		}
-
-		return e;
+		//make edge count array - histogram of weights
+		int[] edgeCount = new int[high + 1];
+		for(int i = 0 ; i < e.size() ; i++){
+			edgeCount[e.get(i).getW()] += 1;
+		}
+		//calculate the starting index for each key
+		int total = 0;
+		for(int i = 0 ; i < edgeCount.length ; i++){
+			int addThisToTotal = edgeCount[i];
+			total += addThisToTotal;
+			edgeCount[i] = total;
+		}
+		for(int i = 0 ; i < edgeCount.length ; i++){
+			System.out.println(edgeCount[i]);
+		}
+		//FIX THIS
+		List<Edge> result = e;
+		System.out.println(e.size());
+		for(int i = 0 ; i < e.size() ; i++){
+			result.set(edgeCount[e.get(i).getW()], e.get(i));
+			edgeCount[e.get(i).getW()] -= 1;
+		}
+		return result;
 	}
 
 	public static List<Edge> quickSort(List<Edge> e){
