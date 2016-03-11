@@ -19,9 +19,9 @@ public class Sort{
 				}
 			}
 		}
-		//printInsertionSort();
-		printCountSort();
-		printQuickSort();
+		printInsertionSort(edges);
+		printCountSort(edges);
+		printQuickSort(edges);
 	}
 	
 	public static List<Edge> insertionSort(List<Edge> e){
@@ -39,7 +39,7 @@ public class Sort{
         return result;
 	}
 
-	public static List<Edge> countSort(List<Edge> e){
+	public static Edge[] countSort(List<Edge> e){
 		int high = 0;
 		int low = 0;
 		//get high and low values
@@ -69,15 +69,11 @@ public class Sort{
 			total += addThisToTotal;
 			edgeCount[i] = total;
 		}
-		for(int i = 0 ; i < edgeCount.length ; i++){
-			System.out.println(edgeCount[i]);
-		}
-		//FIX THIS
-		List<Edge> result = e;
-		System.out.println(e.size());
+		//ADD TO FINAL ARRAY
+		Edge[] result = new Edge[e.size()+1];
 		for(int i = 0 ; i < e.size() ; i++){
-			result.set(edgeCount[e.get(i).getW()], e.get(i));
-			edgeCount[e.get(i).getW()] -= 1;
+			result[edgeCount[e.get(i).getW()]] = e.get(i);
+			edgeCount[e.get(i).getW()] =  edgeCount[e.get(i).getW()] - 1;
 		}
 		return result;
 	}
@@ -86,45 +82,52 @@ public class Sort{
 		return e;
 	}
 
-	public static void printInsertionSort(){
+	public static void printInsertionSort(List<Edge> edgeList){
 		int totalWeight = 0;
 		System.out.println("\n===================================");
 		System.out.println("SORTED EDGES WITH MATRIX USING INSERTION SORT");
 		long startTime = System.currentTimeMillis();
-		List<Edge> sorted = insertionSort(edges);
+		List<Edge> sorted = insertionSort(edgeList);
 		for(Edge e: sorted){
-			System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
-			totalWeight += e.getW();
+			if(n<10){
+				System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
+			}
+			totalWeight += e.getW();	
 		}
+		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Total weight = " + totalWeight);
-		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds \n");
+		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds");
 	}
 
-	public static void printCountSort(){
+	public static void printCountSort(List<Edge> edgeList){
 		int totalWeight = 0;
-		System.out.println("\n===================================");
+		System.out.println("===================================");
 		System.out.println("SORTED EDGES WITH MATRIX USING COUNT SORT");
 		long startTime = System.currentTimeMillis();
-		List<Edge> sorted = countSort(edges);
-		for(Edge e: sorted){
-			System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
-			totalWeight += e.getW();
+		Edge[] sorted = countSort(edgeList);
+		for(int i = 1 ; i < sorted.length ; i++){
+			if(n<10){
+				System.out.println(sorted[i].getR() + " " + sorted[i].getL() + " weight = " + sorted[i].getW());
+			}
+			totalWeight += sorted[i].getW();
 		}
 		long endTime = System.currentTimeMillis();
 		System.out.println("Total weight = " + totalWeight);
-		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds \n");
+		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds");
 	}
 
-	public static void printQuickSort(){
+	public static void printQuickSort(List<Edge> edgeList){
 		int totalWeight = 0;
-		System.out.println("\n===================================");
+		System.out.println("===================================");
 		System.out.println("SORTED EDGES WITH MATRIX USING QUICK SORT");
 		long startTime = System.currentTimeMillis();
-		List<Edge> sorted = quickSort(edges);
-		for(Edge e: sorted){
-			System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
-			totalWeight += e.getW();
+		List<Edge> sorted = quickSort(edgeList);
+		if(n<10){
+			for(Edge e: sorted){
+				System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
+				totalWeight += e.getW();
+			}
 		}
 		long endTime = System.currentTimeMillis();
 		System.out.println("Total weight = " + totalWeight);
