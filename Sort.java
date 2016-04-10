@@ -37,11 +37,15 @@ public class Sort{
 			}
 		}
 		printInsertionSort(edges, "MATRIX");
-		printCountSort(edges, "MATRIX");
-		printQuickSort(edges, "MATRIX");
-		printInsertionSort(edges, "LIST");
-		printCountSort(edges, "LIST");
-		printQuickSort(edges, "LIST");
+		//printCountSort(edges, "MATRIX");
+		//printQuickSort(edges, "MATRIX");
+		//printInsertionSort(edges, "LIST");
+		//printCountSort(edges, "LIST");
+		//printQuickSort(edges, "LIST");
+
+		//TAKE THIS OUT LATER
+		Kruskal k = new Kruskal(g.getN(), edges);
+		System.out.println(k.totalMST() + " is the mst");
 	}
 	
 	public static List<Edge> insertionSort(List<Edge> e){
@@ -150,6 +154,58 @@ public class Sort{
 		int totalWeight = 0;
 		System.out.println("===================================");
 		System.out.println("SORTED EDGES WITH " + s + " USING QUICK SORT");
+		long startTime = System.currentTimeMillis();
+		List<Edge> sorted = quickSort(edgeList, low, high);
+		for(Edge e: sorted){
+			if(n<10){
+				System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
+			}
+			totalWeight += e.getW();
+		}
+		long endTime = System.currentTimeMillis();
+		System.out.println("Total weight = " + totalWeight);
+		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds \n");
+	}
+
+		public static void printKruskalInsertionSort(List<Edge> edgeList, String s){
+		int totalWeight = 0;
+		System.out.println("\n===================================");
+		System.out.println("KRUSKAL WITH " + s + " USING INSERTION SORT");
+		long startTime = System.currentTimeMillis();
+		List<Edge> sorted = insertionSort(edgeList);
+		for(Edge e: sorted){
+			if(n<10){
+				System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
+			}
+			totalWeight += e.getW();	
+		}
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("Total weight = " + totalWeight);
+		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds");
+	}
+
+	public static void printKruskalCountSort(List<Edge> edgeList, String s){
+		int totalWeight = 0;
+		System.out.println("===================================");
+		System.out.println("KRUSKAL WITH " + s + " USING COUNT SORT");
+		long startTime = System.currentTimeMillis();
+		Edge[] sorted = countSort(edgeList);
+		for(int i = 1 ; i < sorted.length ; i++){
+			if(n<10){
+				System.out.println(sorted[i].getR() + " " + sorted[i].getL() + " weight = " + sorted[i].getW());
+			}
+			totalWeight += sorted[i].getW();
+		}
+		long endTime = System.currentTimeMillis();
+		System.out.println("Total weight = " + totalWeight);
+		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds");
+	}
+
+	public static void printKruskalQuickSort(List<Edge> edgeList, String s){
+		int totalWeight = 0;
+		System.out.println("===================================");
+		System.out.println("KRUSKAL WITH " + s + " USING QUICK SORT");
 		long startTime = System.currentTimeMillis();
 		List<Edge> sorted = quickSort(edgeList, low, high);
 		for(Edge e: sorted){
