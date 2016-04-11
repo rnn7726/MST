@@ -221,8 +221,6 @@ public class Sort{
 		System.out.println("===================================");
 		System.out.println("KRUSKAL WITH " + s + " USING QUICK SORT");
 		long startTime = System.currentTimeMillis();
-		List<Edge> sorted = quickSort(edgeList, low, high);
-		sorted = edges;
 		k = new Kruskal(n, edges);
 		totalWeight = k.totalMST();
 
