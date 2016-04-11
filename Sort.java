@@ -9,6 +9,7 @@ public class Sort{
 	static List<Edge> edges = new ArrayList<Edge>();
 	static int high = 0;
 	static int low = 0;
+	static Kruskal k;
 
 	public Sort(Graph graph){
 		g = graph;
@@ -36,16 +37,19 @@ public class Sort{
 				low = edges.get(i).getW();
 			}
 		}
-		printInsertionSort(edges, "MATRIX");
+		//printInsertionSort(edges, "MATRIX");
 		//printCountSort(edges, "MATRIX");
 		//printQuickSort(edges, "MATRIX");
 		//printInsertionSort(edges, "LIST");
 		//printCountSort(edges, "LIST");
 		//printQuickSort(edges, "LIST");
-
-		//TAKE THIS OUT LATER
-		Kruskal k = new Kruskal(g.getN(), edges);
-		System.out.println(k.totalMST() + " is the mst");
+		printKruskalInsertionSort(edges, "MATRIX");
+		printKruskalCountSort(edges, "MATRIX");
+		printKruskalQuickSort(edges, "MATRIX");
+		printKruskalInsertionSort(edges, "LIST");
+		printKruskalCountSort(edges, "LIST");
+		printKruskalQuickSort(edges, "LIST");
+		
 	}
 	
 	public static List<Edge> insertionSort(List<Edge> e){
@@ -79,8 +83,13 @@ public class Sort{
 		//ADD TO FINAL ARRAY
 		Edge[] result = new Edge[e.size()+1];
 		for(int i = 0 ; i < e.size() ; i++){
-			result[edgeCount[e.get(i).getW()]] = e.get(i);
-			edgeCount[e.get(i).getW()] =  edgeCount[e.get(i).getW()] - 1;
+			if (e.get(i).getL() > e.get(i).getL()){
+				result[edgeCount[e.get(i).getW()]] = e.get(i);
+				edgeCount[e.get(i).getW()] =  edgeCount[e.get(i).getW()] - 1;
+			} else {
+				result[edgeCount[e.get(i).getW()]] = e.get(i);
+				edgeCount[e.get(i).getW()] =  edgeCount[e.get(i).getW()] - 1;
+			}
 		}
 		return result;
 	}
@@ -173,15 +182,12 @@ public class Sort{
 		System.out.println("KRUSKAL WITH " + s + " USING INSERTION SORT");
 		long startTime = System.currentTimeMillis();
 		List<Edge> sorted = insertionSort(edgeList);
-		for(Edge e: sorted){
-			if(n<10){
-				System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
-			}
-			totalWeight += e.getW();	
-		}
+		edges = sorted;
+		k = new Kruskal(n, sorted);
+		totalWeight = k.totalMST();
 		
 		long endTime = System.currentTimeMillis();
-		System.out.println("Total weight = " + totalWeight);
+		System.out.println("Total weight of MST using Kruskal: " + totalWeight);
 		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds");
 	}
 
@@ -191,14 +197,22 @@ public class Sort{
 		System.out.println("KRUSKAL WITH " + s + " USING COUNT SORT");
 		long startTime = System.currentTimeMillis();
 		Edge[] sorted = countSort(edgeList);
-		for(int i = 1 ; i < sorted.length ; i++){
-			if(n<10){
-				System.out.println(sorted[i].getR() + " " + sorted[i].getL() + " weight = " + sorted[i].getW());
-			}
-			totalWeight += sorted[i].getW();
+		//for(int i = 1 ; i < sorted.length ; i++){
+		//	if(n<10){
+		//		System.out.println(sorted[i].getR() + " " + sorted[i].getL() + " weight = " + sorted[i].getW());
+		//	}
+		//	totalWeight += sorted[i].getW();
+		//}
+		List<Edge> sortedArrayList = new ArrayList<Edge>();
+		for(int i = 1; i < sorted.length; i++){
+			sortedArrayList.add(sorted[i]);
 		}
+		sortedArrayList = edges;
+		k = new Kruskal(n, sortedArrayList);
+		totalWeight = k.totalMST();
+
 		long endTime = System.currentTimeMillis();
-		System.out.println("Total weight = " + totalWeight);
+		System.out.println("Total weight of MST using Kruskal: " + totalWeight);
 		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds");
 	}
 
@@ -208,15 +222,13 @@ public class Sort{
 		System.out.println("KRUSKAL WITH " + s + " USING QUICK SORT");
 		long startTime = System.currentTimeMillis();
 		List<Edge> sorted = quickSort(edgeList, low, high);
-		for(Edge e: sorted){
-			if(n<10){
-				System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
-			}
-			totalWeight += e.getW();
-		}
+		sorted = edges;
+		k = new Kruskal(n, edges);
+		totalWeight = k.totalMST();
+
 		long endTime = System.currentTimeMillis();
-		System.out.println("Total weight = " + totalWeight);
-		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds \n");
+		System.out.println("Total weight of MST using Kruskal: " + totalWeight);
+		System.out.println("Runtime: " + (endTime-startTime) + " milliseconds");
 	}
 
 }

@@ -30,11 +30,6 @@ public class Kruskal{
 				totalEdges += e.getW();
 				visited.get(0)[e.getR()] = true;
 				visited.get(0)[e.getL()] = true;
-				System.out.println();
-				
-				System.out.println(checkAllPresent(b));
-				printArray(b);
-
 			} else {
 				for (int i = 0; i < visited.size(); i++){
 					boolean[] b = visited.get(i);
@@ -43,6 +38,14 @@ public class Kruskal{
 					if (b[e.getR()] && !b[e.getL()]){
 						//check all other trees for the second node, if it exists, then union
 						//the boolean arrays to be one
+						if (i == 0){
+							if (b.length < 10){
+								System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
+							}
+							b[e.getR()] = true;
+							b[e.getL()] = true;
+							totalEdges += e.getW();
+						}
 						for (int j = 0; j < visited.size(); j++){
 							boolean[] check = visited.get(j);
 							//tree should never be the same as one another, so we ignore equal arrays
@@ -50,26 +53,29 @@ public class Kruskal{
 								//do nothing
 							} else {
 								if (check[e.getL()]){
+									//then add it to this visited boolean[]
 									b = unionArrays(b,check);
-									check = b;
+									//check = unionArrays(b,check);
+									check = new boolean[nodes];
 								}
 							}
 						}
-						//then add it to this visited boolean[]
-						if (b.length < 10){
-							System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
+						if(checkAllPresent(b)){
+							return totalEdges;
 						}
-						totalEdges += e.getW();
-						b[e.getR()] = true;
-						b[e.getL()] = true;
-
-						System.out.println(checkAllPresent(b));
-						printArray(b);
 
 						break;
 					} else if (b[e.getL()] && !b[e.getR()]){
 						//check all other trees for the second node, if it exists, then union
 						//the boolean arrays to be one
+						if (i == 0){
+							if (b.length < 10){
+								System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
+							}
+							b[e.getR()] = true;
+							b[e.getL()] = true;							
+							totalEdges += e.getW();
+						}
 						for (int j = 0; j < visited.size(); j++){
 							boolean[] check = visited.get(j);
 							//tree should never be the same as one another, so we ignore equal arrays
@@ -77,22 +83,16 @@ public class Kruskal{
 								//do nothing
 							} else {
 								if (check[e.getR()]){
+									//then add it to this visited boolean[]
 									b = unionArrays(b,check);
-									check = b;
+									//check = unionArrays(b,check);
+									check = new boolean[nodes];
 								}
 							}
 						}
-						//then add it to this visited boolean[]
-						if (b.length < 10){
-							System.out.println(e.getR() + " " + e.getL() + " weight = " + e.getW());
+						if(checkAllPresent(b)){
+							return totalEdges;
 						}
-						totalEdges += e.getW();
-						b[e.getR()] = true;
-						b[e.getL()] = true;
-
-						System.out.println(checkAllPresent(b));
-						printArray(b);
-
 						break;
 					} else if ( !b[e.getR()] && !b[e.getL()] ){
 						boolean[] newTree = new boolean[nodes];
@@ -104,10 +104,9 @@ public class Kruskal{
 						newTree[e.getR()] = true;
 						newTree[e.getL()] = true;
 						visited.add(newTree);
-
-						System.out.println(checkAllPresent(b));
-						printArray(b);
-						
+						if(checkAllPresent(b)){
+							return totalEdges;
+						}
 						break;
 					//otherwise, do nothing since it would create a cycle
 						//if the edge has 1 vertex in one tree and 1 in another tree, then combine them
